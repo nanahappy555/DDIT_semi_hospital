@@ -1,0 +1,83 @@
+<beans>
+	<!-- datasource -->
+	<bean id="sqlSessionFactory"
+		  class="com.jsp.datasource.OracleMybatisSqlSessionFactory" />
+		  
+	<!-- Repository -->
+	<bean id="memberDAO" class="com.jsp.dao.MemberDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="memberService" class="com.jsp.service.MemberServiceImpl" >
+		<property name="memberDAO" ref-value="memberDAO" /> 
+	</bean>
+	
+	<!-- Repository -->
+	<bean id="noticeDAO" class="com.jsp.dao.NoticeDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="noticeService" class="com.jsp.service.NoticeServiceImpl" >
+		<property name="noticeDAO" ref-value="noticeDAO" /> 
+	</bean>
+	
+	
+	<!-- Repository -->
+	<bean id="chartDAO" class="com.jsp.dao.ChartDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="chartService" class="com.jsp.service.ChartServiceImpl" >
+		<property name="chartDAO" ref-value="chartDAO" /> 
+	</bean>
+	
+	
+	<!-- Repository -->
+	<bean id="newsDAO" class="com.jsp.dao.NewsDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="newsService" class="com.jsp.service.NewsServiceImpl" >
+		<property name="newsDAO" ref-value="newsDAO" /> 
+	</bean>
+	
+	
+	<!-- Repository -->
+	<bean id="qnaDAO" class="com.jsp.dao.QnaDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="qnaService" class="com.jsp.service.QnaServiceImpl" >
+		<property name="qnaDAO" ref-value="qnaDAO" /> 
+	</bean>
+	
+	
+	<!-- Repository -->
+	<bean id="mypageDAO" class="com.jsp.dao.MypageDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="mypageService" class="com.jsp.service.MypageServiceImpl" >
+		<property name="mypageDAO" ref-value="mypageDAO" /> 
+	</bean>
+	
+	<!-- Repository -->
+	<bean id="reservationDAO" class="com.jsp.dao.ReservationDAOImpl" >
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+			
+	<!-- Service -->
+	<bean id="reservationService" class="com.jsp.service.ReservationServiceImpl" >
+		<property name="reservationDAO" ref-value="reservationDAO" /> 
+	</bean>
+
+	
+</beans>
+
+

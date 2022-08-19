@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Mypage-Mapper">
+	<sql id="search">	
+		<if test="searchType == 'mco'.toString()">
+			and mcode like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'mid'.toString()">
+			and id like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'mpwd'.toString()">
+			and pwd like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'mname'.toString()">
+			and name like '%'||#{keyword}||'%'			
+		</if>			
+		<if test="searchType == 'mgender'.toString()">
+			and gender like '%'||#{keyword}||'%'			
+		</if>			
+		<if test="searchType == 'mbir'.toString()">
+			and birth like '%'||#{keyword}||'%'			
+		</if>			
+		<if test="searchType == 'memail'.toString()">
+			and email like '%'||#{keyword}||'%'			
+		</if>			
+		<if test="searchType == 'mphone'.toString()">
+			and phone like '%'||#{keyword}||'%'			
+		</if>			
+		<if test="searchType == 'maddr1'.toString()">
+			and addr1 like '%'||#{keyword}||'%'			
+		</if>			
+		<if test="searchType == 'maddr2'.toString()">
+			and addr2 like '%'||#{keyword}||'%'			
+		</if>			
+	</sql>	
+	
+	<select id="selectMypageMainNum" resultType="int">
+		select mcode,
+			   gender,
+			   birth
+		  from member
+		 where mcode is not null
+	</select>
+	
+	<select id="selectMypageMainVar" resultType="mypage">
+		select id,
+		       pwd,
+		       name,
+		       email,
+		       phone,
+		       addr1,
+		       addr2
+		  from member
+	     where mcode is not null
+	</select>
+	
+</mapper>
+

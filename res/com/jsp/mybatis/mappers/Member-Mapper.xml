@@ -1,0 +1,89 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member-Mapper">
+
+  <resultMap type="com.jsp.dto.MemberVO" id="mem">
+      <result column="mcode" property="mcode"/>
+      <result column="id" property="id"/>
+      <result column="pwd" property="pwd"/>
+      <result column="name" property="name"/>
+      <result column="gender" property="gender"/>
+      <result column="birth" property="birth"/>
+      <result column="email" property="email"/>
+      <result column="phone" property="phone"/>
+      <result column="addr1" property="addr1"/>
+      <result column="addr2" property="addr2"/>
+      <result column="authority" property="authority"/>
+   </resultMap>
+	
+	<sql id="search">	
+		<if test="searchType == 'i'.toString()">
+			and id like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'p'.toString()">
+			and phone like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'e'.toString()">
+			and email like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'n'.toString()">
+			and name like '%'||#{keyword}||'%'			
+		</if>			
+	</sql>	
+	
+	<select id="selectMemberList" resultMap="mem">
+		select
+			*
+		from member
+		where id is not null
+		<include refid="search" />
+		order by mcode desc
+	</select>
+	<select id="selectMemberListCount" resultType="int">
+		select
+		count(*) 
+		from member
+		where id is not null
+		<include refid="search" />
+	</select>
+	<select id="selectMemberById" parameterType="str" resultMap="mem">
+		select
+		*
+		from member
+		where id=#{id}
+	</select>
+	
+	<select id="selectMemberByMcode" parameterType="int" resultType="str">
+		select
+		name
+		from member
+		where mcode=#{mcode}
+	</select>
+	
+	<update id="insertMember" parameterType="member">
+		insert into 
+		member(mcode, id, pwd, name, gender,birth, email, phone,addr1,addr2,authority)
+		values(mem_seq.nextVal, #{id},#{pwd},#{name},#{gender},#{birth},#{email},#{phone},#{addr1},#{addr2},#{authority})
+	</update>
+	
+	<update id="updateMember" parameterType="member">
+		update member 
+		set 
+		pwd=#{pwd},email=#{email},phone=#{phone},name=#{name},
+		add1=#{add1}, add2=#{add2}
+		
+		<if test="authority != null">
+			,authority=#{authority}
+		</if>
+		
+		where id=#{id}
+	</update>
+	
+	<update id="deleteMember" parameterType="str" >
+		delete 
+		from member 
+		where id=#{id}		
+	</update>
+</mapper>

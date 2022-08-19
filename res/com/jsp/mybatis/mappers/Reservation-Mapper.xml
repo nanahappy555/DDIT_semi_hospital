@@ -1,0 +1,62 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Reservation-Mapper">
+
+<!--   <resultMap type="com.jsp.dto.ReservationVO" id="nos">
+      <result column="rnum" property="rnum"/>
+      <result column="rdate" property="rdate"/>
+      <result column="rtime" property="rtime"/>
+      <result column="mcode" property="mcode"/>
+      <result column="dcode" property="dcode"/>
+
+   </resultMap>
+
+	<select id="selectReservationList" resultMap="nos">
+		select
+		* 
+		from reservation
+		where rnum is not null
+		<include refid="search" />
+		order by regdate desc
+	</select> -->
+<!-- 	<select id="selectReservationList" resultType="reservation"> -->
+<!--       select -->
+<!--       *  -->
+<!--       from reservation -->
+<!--       where id is not null -->
+<!--       <include refid="search" /> -->
+<!--       order by regDate desc -->
+<!--    </select> -->
+	
+
+<!--  	<select id="selectReservationListCount" resultType="int"> -->
+<!-- 		select -->
+<!-- 		count(*)  -->
+<!-- 		from reservation -->
+<!-- 		where id is not null -->
+<!-- 		<include refid="search" /> -->
+<!-- 	</select>  -->
+
+	<!-- 예약 조회가 로그인 후 해당 Member코드와 동일한 것을 찾아야함 -->
+	<select id="selectReservationByRnum" parameterType="String" resultType="reservation">
+		select
+		*
+		from reservation
+		where rnum=#{rnum}
+	</select>
+	
+	<update id="insertReservation" parameterType="reservation">
+		insert into 
+		reservation(rnum, rdate, rtime, mcode, dcode)
+		values(#{rnum},#{rdate},#{rtime},1,#{dcode})
+	</update>
+	
+	<!--  생각중...  -->
+	<update id="deleteReservation" parameterType="String" >
+		delete 
+		from reservation 
+		where rnum=#{rnum}		
+	</update>
+</mapper>

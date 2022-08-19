@@ -1,0 +1,84 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Qna-Mapper">
+	
+  <resultMap type="com.jsp.dto.QnaVO" id="qnaMap">
+      <result column="qno" property="qno"/>
+      <result column="title" property="title"/>
+      <result column="mcode" property="mcode"/>
+      <result column="content" property="content"/>
+      <result column="regdate" property="regdate"/>
+      <result column="viewcnt" property="viewcnt"/>
+      <result column="updatedate" property="updatedate"/>
+      <result column="dist" property="dist"/>
+<!-- 		<association column="name" property="member" javaType="MemberVO"> -->
+<!-- 			<id column="name" property="name"/> -->
+<!-- 			<result column="mCode" property="mCode"/> -->
+<!-- 		</association> -->
+   </resultMap>
+	
+	
+	<sql id="search">	
+		<if test="searchType == 't'.toString()">
+			and title like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and mcode like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'c'.toString()">
+			and content like '%'||#{keyword}||'%'			
+		</if>			
+	</sql>	
+	
+<!-- 	<select id="selectMemberName" parameterType="str" resultType="mem"> -->
+<!-- 		select -->
+<!-- 			m.name as writer -->
+<!-- 		from notice n, member m -->
+<!-- 		where n.mcode=m.mcode -->
+<!-- 		and m.name=#{name}; -->
+<!-- 	</select> -->
+	
+	<select id="selectQnaList" resultMap="qnaMap">
+		select
+		* 
+		from qna
+		where qno is not null
+		<include refid="search" />
+		order by regdate desc
+	</select>
+	<select id="selectQnaListCount" resultType="int">
+		select
+		count(*) 
+		from qna
+		where qno is not null
+		<include refid="search" />
+	</select>
+	<select id="selectQnaByQNo" parameterType="int" resultType="qna">
+		select
+		*
+		from qna
+		where qno=#{qno}
+	</select>
+	
+	<update id="insertQna" parameterType="qna">
+		insert into 
+		qna(qno, title, mcode, content, regdate,viewcnt,updatedate,dist)
+		values(qna_seq.nextVal,#{title},1,#{content},sysdate,1,sysdate,'N')
+	</update>
+	
+	<update id="updateQna" parameterType="qna">
+		update qna 
+		set 
+		title=#{title},content=#{content},updatedate=#{sysdate}
+		
+		where qno=#{qno}
+	</update>
+	
+	<update id="deleteQna" parameterType="int" >
+		delete 
+		from qna 
+		where qno=#{qno}		
+	</update>
+</mapper>

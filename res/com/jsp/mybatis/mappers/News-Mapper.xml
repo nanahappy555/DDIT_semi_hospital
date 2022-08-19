@@ -1,0 +1,84 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="News-Mapper">
+	
+  <resultMap type="com.jsp.dto.NewsVO" id="newsMap">
+      <result column="newsno" property="newsno"/>
+      <result column="title" property="title"/>
+      <result column="mcode" property="mcode"/>
+      <result column="content" property="content"/>
+      <result column="regdate" property="regdate"/>
+      <result column="viewcnt" property="viewcnt"/>
+      <result column="updatedate" property="updatedate"/>
+      <result column="dist" property="dist"/>
+<!-- 		<association column="name" property="member" javaType="MemberVO"> -->
+<!-- 			<id column="name" property="name"/> -->
+<!-- 			<result column="mCode" property="mCode"/> -->
+<!-- 		</association> -->
+   </resultMap>
+	
+	
+	<sql id="search">	
+		<if test="searchType == 't'.toString()">
+			and title like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and mcode like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'c'.toString()">
+			and content like '%'||#{keyword}||'%'			
+		</if>			
+	</sql>	
+	
+<!-- 	<select id="selectMemberName" parameterType="str" resultType="mem"> -->
+<!-- 		select -->
+<!-- 			m.name as writer -->
+<!-- 		from notice n, member m -->
+<!-- 		where n.mcode=m.mcode -->
+<!-- 		and m.name=#{name}; -->
+<!-- 	</select> -->
+	
+	<select id="selectNewsList" resultMap="newsMap">
+		select
+		* 
+		from news
+		where newsno is not null
+		<include refid="search" />
+		order by regdate desc
+	</select>
+	<select id="selectNewsListCount" resultType="int">
+		select
+		count(*) 
+		from news
+		where newsno is not null
+		<include refid="search" />
+	</select>
+	<select id="selectNewsByNewsNo" parameterType="int" resultType="news">
+		select
+		*
+		from news
+		where newsno=#{newsno}
+	</select>
+	
+	<update id="insertNews" parameterType="news">
+		insert into 
+		news(newsno, title, mcode, content, regdate,viewcnt,updatedate,dist)
+		values(news_seq.nextVal,#{title},1,#{content},sysdate,1,sysdate,'N')
+	</update>
+	
+	<update id="updateNews" parameterType="news">
+		update news 
+		set 
+		title=#{title},content=#{content},updatedate=#{sysdate}
+		
+		where newsno=#{newsno}
+	</update>
+	
+	<update id="deleteNews" parameterType="int" >
+		delete 
+		from news 
+		where newsno=#{newsno}		
+	</update>
+</mapper>
